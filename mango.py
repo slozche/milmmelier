@@ -21,7 +21,7 @@ for cafe in cafes:
 from bs4 import BeautifulSoup
 
 from pymongo import MongoClient
-client = MongoClient('mongodb+srv://jong6598:hyun4198@cluster0.tuvzlln.mongodb.net/Cluster0?retryWrites=true&w=majority')
+client = MongoClient('mongodb+srv://port99:BBRnaAd7f3Hadhrq@cluster0.5l5eay2.mongodb.net/?retryWrites=true&w=majority')
 db = client.milmmelier
 
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
