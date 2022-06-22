@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from pymongo import MongoClient
-client = MongoClient('mongodb+srv://jong6598:hyun4198@cluster0.tuvzlln.mongodb.net/Cluster0?retryWrites=true&w=majority')
+client = MongoClient('mongodb+srv://port99:BBRnaAd7f3Hadhrq@cluster0.5l5eay2.mongodb.net/?retryWrites=true&w=majority')
 db = client.milmmelier
 
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
@@ -18,27 +18,6 @@ for cafe in cafes:
         address = cafe.select_one('div:nth-child(1) > figure > a > div > img')['alt'].split("-",maxsplit=1)[1]
 
         headers = {
-            "X-NCP-APIGW-API-KEY-ID": "m1qc7sxv4t",
-            "X-NCP-APIGW-API-KEY": "utc5druQG9LHR1sV4W18XLDVS562LrTLqVTFLCS4"
-        }
-        r = requests.get(f"https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query={address}",
-                         headers=headers)
-        response = r.json()
-
-        if response["status"] == "OK":
-            if len(response["addresses"]) > 0:
-                x = float(response["addresses"][0]["x"])
-                y = float(response["addresses"][0]["y"])
-                print(title, address, star, x, y)
-                doc = {
-                    'star': star,
-                    'title': title,
-                    'address': address,
-                    "mapx": x,
-                    "mapy": y}
-                db.matjips.insert_one(doc)
-
-
             "X-NCP-APIGW-API-KEY-ID": "m1qc7sxv4t",
             "X-NCP-APIGW-API-KEY": "utc5druQG9LHR1sV4W18XLDVS562LrTLqVTFLCS4"
         }
