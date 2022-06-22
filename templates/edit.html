@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        * {
+            padding: 0;
+            border: 0;
+            margin: 0;
+        }
+
+        body {
+            text-decoration: none;
+            list-style: none;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #BDBDBD;
+        }
+
+        header #logo {
+            margin-top: 14px;
+        }
+
+        header nav {
+            margin-top: 20px;
+        }
+
+        header nav a {
+            margin: 0 10px;
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            color: #F0BA84;
+
+        }
+
+        .wrap {
+            margin: 82px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wrapper {
+            width: 1000px;
+            border: 1px solid #BDBDBD;
+            border-radius: 5px;
+        }
+
+        .container {
+            width: 800px;
+            padding: 40px 0;
+            margin: auto;
+        }
+
+        .container #title {
+            width: 100%;
+            font-size: 32px;
+            color: #BDBDBD;
+        }
+
+        .container hr {
+            border: 1px solid #BDBDBD;
+            margin-top: 24px;
+        }
+
+        .container #content {
+            width: 100%;
+            height: 6.25em;
+            border: none;
+            margin-top: 24px;
+            resize: none;
+            font-size: 16px;
+        }
+
+        .container #picture {
+            margin-top: 100px;
+        }
+
+        button {
+            width: 380px;
+            height: 50px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .wrap .primary {
+            margin-top: 40px;
+            background-color: #F0BA84;
+            color: white;
+        }
+
+        .wrap .secondary {
+            border: 1px solid #BDBDBD;
+            margin-top: 12px;
+            background-color: transparent;
+            color: #696969;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="../static/img/logo.jpg" alt="logo" id="logo">
+        <nav>
+            <a href="/matjipmark">맛집</a>
+            <a href="/review">리뷰</a>
+        </nav>
+    </header>
+    <div class="wrap">
+        <div class="wrapper">
+            <div class="container">
+                <input type="text" placeholder="제목" id="title">
+                <hr>
+                <textarea name="" id="content" cols="30" rows="5" placeholder="내용을 입력해주세요."></textarea>
+                <h3></h3>
+                <input type="file" id="picture" accept="image/*">
+            </div>
+        </div>
+        <button class="primary">작성 완료</button>
+        <button class="secondary">취소</button>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        const completeBtn = document.querySelector('.primary')
+        const backBtn = document.querySelector('.secondary')
+
+        backBtn.addEventListener('click', () => window.history.back())
+
+        const hello = () => {
+            let title = document.querySelector('#title').value
+            let content = document.querySelector('#content').value
+            let file = document.querySelector('#picture').files[0]
+            let form_data = new FormData()
+
+            console.log(title, content, file)
+
+            form_data.append("file_give", file)
+            form_data.append("title_give", title)
+            form_data.append("content_give", content)
+
+            console.log(form_data)
+        }
+
+        const posting = () => {
+            let title = document.querySelector('#title').value
+            let content = document.querySelector('#content').value
+            // let file = $('#picture')[0].files[0]
+            let form_data = new FormData()
+
+            // form_data.append("file_give", file)
+            form_data.append("title_give", title)
+            form_data.append("content_give", content)
+
+            $.ajax({
+                type: "POST",
+                url: "/review/posting",
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.href = '/review'
+                }
+            });
+        }
+
+        completeBtn.addEventListener('click', posting)
+    </script>
+</body>
+
+</html>

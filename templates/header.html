@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MILMMLIER</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        * {
+            padding: 0;
+            border: 0;
+            margin: 0;
+        }
+
+        body {
+            text-decoration: none;
+            list-style: none;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #BDBDBD;
+            background-color: white;
+        }
+
+        header #logo {
+            margin-top: 14px;
+        }
+
+        header nav {
+            margin-top: 20px;
+        }
+
+        header nav a {
+            margin: 0 10px;
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            color: #F0BA84;
+
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <header>
+        <img src="../static/img/logo.jpg" alt="logo" id="logo">
+        <nav>
+            <a href="/matjipmark">맛집</a>
+            <a href="/review">리뷰</a>
+        </nav>
+    </header>
+    {% block body %}
+    {% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+{% extends 'header.html' %}
+{% block head %}
+    <style>
+        .wrap {
+            width: 1030px;
+            margin: auto;
+        }
+
+        .top {
+            position: relative;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-left: 10px;
+        }
+
+        #edit {
+            width: 120px;
+            height: 44px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            background-color: #F0BA84;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .container {
+            padding-top: 30px;
+            display: flex;
+            flex-flow: wrap;
+
+        }
+
+        .item {
+            height: 500px;
+            padding: 20px;
+            border: 1px solid #BDBDBD;
+            border-radius: 5px;
+            margin: 10px;
+        }
+
+        .item img {
+            width: 280px;
+            height: 210px;
+        }
+
+        .item h2 {
+            font-size: 16px;
+            font-weight: 700px;
+            margin-top: 20px;
+        }
+
+        .item p {
+            font-size: 16px;
+            line-height: 1.5em;
+            margin-top: 16px;
+        }
+    </style>
+    <script>
+        function goToEdit(){
+            alert('go!')
+        }
+        
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "/review/listing",
+                data: {},
+                success: function (response) {
+                    let reviews = response['reviews']
+
+                    reviews.forEach((review) => {
+                        let title = review['title']
+                        let content = review['content']
+                        // let file = review['file']
+                        let temp_html = `
+                                        <div class="item">
+                                            <img id="picture" src="" alt="picture">
+                                            <h2 id="title">${title}</h2>
+                                            <p id="content">${content}</p>
+                                            <p></p>
+                                        </div>
+                                        `
+                        $('.container').append(temp_html)
+                    });
+                }
+            })
+        })
+
+
+
+
+    </script>
+{% endblock %}
+{% block body %}
+    <div class="wrap">
+        <div class="top">
+            <h1>리뷰</h1>
+            <button onClick="window.location.href = 'review/edit'" id="edit">리뷰쓰기</button>
+        </div>
+        <div class="container"></div>
+    </div>
+{% endblock %}
