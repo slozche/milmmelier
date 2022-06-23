@@ -22,7 +22,7 @@
 
 #프로젝트 초안
 
-![와이어프레임 및 api](https://www.notion.so/Chapter-1-7b453548af8341dc815f17033f44df72)
+[와이어프레임 및 api](https://www.notion.so/Chapter-1-7b453548af8341dc815f17033f44df72)
 <br/>
 <br/>
 
