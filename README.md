@@ -10,13 +10,13 @@
 
 #링크
 
-[milmmelier](http://54.180.105.208/)
+[milmmelier](http://54.180.105.208/login)
 
 <br/>
 
 #시연영상
 
-[milmmelier 시연영상](링크)
+[milmmelier 시연영상](https://www.youtube.com/watch?v=5FVSqzKxk8o)
 <br/>
 <br/>
 
@@ -52,3 +52,5 @@
 
 <br/>
 <br/>
+
+#개인회고
