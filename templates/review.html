@@ -2,7 +2,7 @@
 {% block head %}
     <style>
         .wrap {
-            width: 1030px;
+            width: 1200px;
             margin: auto;
         }
 
@@ -38,28 +38,49 @@
         }
 
         .item {
-            height: 500px;
+            width: 320px;
+            height: 240px;
             padding: 20px;
             border: 1px solid #BDBDBD;
             border-radius: 5px;
             margin: 10px;
-        }
-
-        .item img {
-            width: 280px;
-            height: 210px;
+            position: relative;
+            background-color: white;
         }
 
         .item h2 {
             font-size: 16px;
-            font-weight: 700px;
-            margin-top: 20px;
+            font-weight: 700;
         }
-
-        .item p {
+        .item #place {
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+        .item #content {
             font-size: 16px;
             line-height: 1.5em;
-            margin-top: 16px;
+            margin-top: 12px;
+        }
+        .item #date {
+            font-size: 14px;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+        }
+        .item #delete {
+            font-size: 14px;
+            width: 60px;
+            height: 28px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            background-color: #F0BA84;
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+
         }
     </style>
     <script>
@@ -76,15 +97,19 @@
                     let reviews = response['reviews']
 
                     reviews.forEach((review) => {
+                        let num = review['num']
                         let title = review['title']
                         let content = review['content']
-                        // let file = review['file']
+                        let place = review['place']
+                        let date = review['date']
+    
                         let temp_html = `
                                         <div class="item">
-                                            <img id="picture" src="" alt="picture">
                                             <h2 id="title">${title}</h2>
+                                            <p id="place">${place}</p>
                                             <p id="content">${content}</p>
-                                            <p></p>
+                                            <p id="date">${date}</p>
+                                            <button id="delete" onclick="delete_review(${num})" type="button">삭제</button>
                                         </div>
                                         `
                         $('.container').append(temp_html)
@@ -93,7 +118,17 @@
             })
         })
 
-
+        function delete_review(num) {
+            $.ajax({
+                type: "POST",
+                url: "/review/delete",
+                data: { num_give: num},
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.reload()
+                }
+            });
+        }
 
 
     </script>

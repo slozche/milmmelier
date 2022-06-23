@@ -30,16 +30,21 @@
     rel="stylesheet">
 
 <style>
+    body {
+        background-color: RGBA(240, 186, 132, 0.2);
+        min-height: 100vh;
+    }
     .wrap {
         width: 90%;
         max-width: 750px;
         margin: 0 auto;
+        background-color: RGBA(240, 186, 132, 0.2);
     }
 
     .banner {
         width: 100%;
         height: 19vh;
-        background-image: url("{{url_for('static', filename='img/banner_edit.png')}}");
+        background-image: url(/static/banner.jpg);
         background-position: center;
         background-size: contain;
         background-repeat: repeat;
@@ -99,9 +104,29 @@
     }
 
     .btn-sparta {
-        color: #fff;
-        background-color: #e8344e;
-        border-color: #e8344e;
+        color : #fff;
+        background-color: #F0BA84;
+        border-color: #F0BA84;
+        font-family: 'Black Han Sans', sans-serif;
+    }
+    
+    .logout {
+        color : #F0BA84;
+        background-color: #fff;
+
+        border: #F0BA84 2px solid;
+        border-radius: 5px;
+
+        font-family: 'IBM Plex Sans KR', sans-serif;
+        font-size: 12px;
+
+        margin : 5px 0 5px 92%
+    }
+
+    .logout:hover {
+        color : #fff;
+        background-color: #F0BA84;
+        cursor: pointer;
     }
 
     .iw-inner {
@@ -140,7 +165,6 @@
 
     function get_matjips() {
 
-        $('#matjip-box').empty();
         for (let i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
             infowindows[i].clone()
@@ -184,9 +208,8 @@
         let temp_html = `<div class="card" id="card-${i}">
                                         <div class="card-body">
                                             <h5 class="card-title"><a href="javascript:click2center('${i}')" class="matjip-title">${matjip.title}</a></h5>
-                                            <h6 class="card-subtitle mb-2 text-muted">${matjip.category}</h6>
+                                            <h6 class="card-subtitle mb-2 text-muted">${matjip.star}</h6>
                                             <p class="card-text">${matjip.address}</p>
-                                            <p class="card-text" style="color:blue;">${matjip.show}</p>
                                         </div>
                                     </div>`
         $('#matjip-box').append(temp_html);
@@ -250,14 +273,23 @@
             }
         })
     }
+    function logout() {
+        $.removeCookie('mytoken');
+        alert('로그아웃!');
+        window.location.href='/sign_in'
+    }
 </script>
 {% endblock %}
 {% block body %}
     <div class="wrap">
+        <!-- 로그아웃 기능 오류 발생 -->
+        <!-- <div calss="menu">
+            <button type="button" onclick="logout()" class="logout">로그아웃</button>
+        </div> -->
         <div class="banner">
             <div class="d-flex flex-column align-items-center justify-content-center"
                 style="background-color: #00000080;width: 100%;height: 100%;">
-                <button type="button" onclick="get_matjips()" class="btn btn-sparta">
+                <button type="button" onclick="window.location.reload()" class="btn btn-sparta">
                     새로고침하고 더 많은 맛집 보기
                 </button>
             </div>

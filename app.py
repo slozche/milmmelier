@@ -8,15 +8,15 @@ from datetime import datetime, timedelta
 import requests
 from bs4 import BeautifulSoup
 
-
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
 SECRET_KEY = 'SPARTA'
-
 client = MongoClient('mongodb+srv://port99:BBRnaAd7f3Hadhrq@cluster0.5l5eay2.mongodb.net/?retryWrites=true&w=majority')
+
 db = client.milmmelier;
+
 
 # 로그인 페이지 코딩 시작
 
@@ -38,6 +38,7 @@ def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
 
+
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
     # 로그인
@@ -49,10 +50,10 @@ def sign_in():
 
     if result is not None:
         payload = {
-         'id': username_receive,
-         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+            'id': username_receive,
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
-        token =  jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
@@ -66,8 +67,8 @@ def sign_up():
     password_receive = request.form['password_give']
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
     doc = {
-        "username": username_receive,                               # 아이디
-        "password": password_hash,                                  # 비밀번호
+        "username": username_receive,  # 아이디
+        "password": password_hash,  # 비밀번호
     }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
@@ -103,15 +104,14 @@ def posting():
 
 # 맛집 페이지 코딩 시작
 
-@app.route('/matjipmark')
-def matjip():
-    return render_template('index.html')
-
-
 @app.route('/matjip', methods=["GET"])
 def get_matjip():
-# 맛집 목록을 반환하는 API
-    return jsonify({'result': 'success', 'matjip_list': []})
+    # 맛집 목록을 반환하는 API
+    matjip_list = list(db.matjips.find({}, {'_id': False}))
+    return jsonify({'result': 'success', 'matjip_list': matjip_list})
+
+
+# 크롤링 코드 시작
 
 @app.route('/like_matjip', methods=["POST"])
 def like_matjip():
@@ -123,29 +123,9 @@ def like_matjip():
     if action_receive == "like":
         db.matjips.update_one({"title": title_receive, "address": address_receive}, {"$set": {"liked": True}})
     else:
-            db.matjips.update_one({"title": title_receive, "address": address_receive}, {"$unset": {"liked": False}})
+        db.matjips.update_one({"title": title_receive, "address": address_receive}, {"$unset": {"liked": False}})
     return jsonify({'result': 'success'})
 
-# 크롤링 코드 시작
-
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
-data = requests.get('http://www.mangoplate.com/search/%EB%B0%80%ED%81%AC%ED%8B%B0', headers=headers)
-
-soup = BeautifulSoup(data.text, 'html.parser')
-cafes = soup.select('body > main > article > div.column-wrapper > div > div > section > div.search-list-restaurants-inner-wrap > ul > li')
-for cafe in cafes:
-    a = cafe.select_one('figure > figcaption > div > a > h2')
-    if a is not None:
-        name = " ".join(a.text.split())
-        star = cafe.select_one('div:nth-child(1) > figure > figcaption > div > strong').text
-        address = cafe.select_one('div:nth-child(1) > figure > a > div > img')['alt'].split("-",maxsplit=1)[1]
-
-        doc = {
-            'star' : star,
-            'name' : name,
-            'address' : address
-        }
-        db.matjips.insert_one(doc)
 
 
 # 리뷰 페이지 코딩 시작
@@ -169,17 +149,33 @@ def show_review():
 def review_post():
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
-    # file = request.files["file_give"]
+    place_receive = request.form['place_give']
+
+    today = datetime.now()
+    mytime = today.strftime('%Y-%m-%d')
+
+    review_list = list(db.review.find({}, {'_id' : False}))
+    count = len(review_list) + 1
     
     doc = {
+        'num' : count,
         'title' : title_receive,
         'content' : content_receive,
-        # 'file' : file
+        'place' : place_receive,
+        'date' : mytime
     }
 
     db.review.insert_one(doc)
 
-    return jsonify({'msg':'작성 완료!'})
+    return jsonify({'msg': '작성 완료!'})
+
+@app.route("/review/delete", methods=["POST"])
+def review_delete():
+    num_receive = request.form['num_give']
+    
+    db.review.delete_one({"num":int(num_receive)})
+    
+    return jsonify({'msg': '삭제 완료!'})
 
 
 if __name__ == '__main__':
